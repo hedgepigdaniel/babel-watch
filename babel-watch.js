@@ -136,6 +136,7 @@ let watcherInitialized = (program.watch.length === 0);
 
 process.on('SIGINT', function() {
   watcher.close();
+  killApp();
   process.exit(1);
 });
 
