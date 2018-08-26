@@ -136,7 +136,7 @@ let watcherInitialized = (program.watch.length === 0);
 
 process.on('SIGINT', function() {
   watcher.close();
-  killApp();
+  killApp(false);
   process.exit(1);
 });
 
@@ -215,7 +215,7 @@ function handleFileLoad(filename, callback) {
   }
 }
 
-function killApp() {
+function killApp(restart) {
   if (childApp) {
     const currentPipeFd = pipeFd;
     const currentPipeFilename = pipeFilename;
@@ -232,7 +232,9 @@ function killApp() {
       }
       restartAppInternal();
     };
-    childApp.on('exit', restartOnce);
+    if (restart) {
+      childApp.on('exit', restartOnce);
+    }
     let isRunning = true;
     try {
       process.kill(childApp.pid, 0);
@@ -252,7 +254,9 @@ function killApp() {
       pipeFd = undefined;
       pipeFilename = undefined;
       childApp = undefined;
-      restartOnce();
+      if (restart) {
+        restartOnce();
+      }
     }
   }
 }
@@ -262,7 +266,7 @@ function prepareRestart() {
     // kill app early as `compile` may take a while
     var restartMessage = program.message ? program.message : ">>> RESTARTING <<<";
     console.log(restartMessage);
-    killApp();
+    killApp(true);
   } else {
     restartAppInternal();
   }
