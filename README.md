@@ -1,14 +1,10 @@
-# Looking for maintainer
-
-As I've stopped using this project some time ago I'd be happy to onboard new person who would be responsible for evaluating, merging PRs and publishing new releases. If you would like to be such a person and help this community get what they deserve join our discussion here: https://github.com/kmagiera/babel-watch/issues/71
-
 # babel-watch
 
 Reload your babel-node app on JS source file changes. And do it *fast*.
 
 ## Why should I use it?
 
-If you're tired of using [`babel-node`](https://github.com/babel/babel/tree/master/packages/babel-cli) together with [`nodemon`](https://github.com/remy/nodemon) (or similar solution). The reason why the aforementioned setup performs so badly is the startup time of `babel-node` itself. `babel-watch` only starts `babel` in the "master" process where it also starts the file watcher. The transpilation is performed in that process too. On file-watcher events, it spawns a pure `node` process and passes transpiled code from the parent process together with the source maps. This allows us to avoid loading `babel` and all its deps every time we restart the JS script/app.
+If you're tired of using [`babel-node`](https://github.com/babel/babel/tree/master/packages/babel-cli) together with [`nodemon`](https://github.com/remy/nodemon), [`babel/cli`](https://babeljs.io/docs/en/babel-cli) with `--watch` option (or similar solution). The reason why the aforementioned setup performs so badly is the startup time of `babel-node` itself. `babel-watch` only starts `babel` in the "master" process where it also starts the file watcher. The transpilation is performed in that process too. On file-watcher events, it spawns a pure `node` process and passes transpiled code from the parent process together with the source maps. This allows us to avoid loading `babel` and all its deps every time we restart the JS script/app.
 
 ## Autowatch
 
@@ -49,6 +45,7 @@ Then use `babel-watch` in your `package.json` in scripts section like this:
     -d, --debug [port]             Start debugger on port
     -B, --debug-brk                Enable debug break mode
     -I, --inspect                  Enable inspect mode
+    -X, --inspect-brk [address]    Enable inspect break mode
     -o, --only [globs]             Matching files will be transpiled
     -i, --ignore [globs]           Matching files will not be transpiled
     -e, --extensions [extensions]  List of extensions to hook into [.es6,.js,.es,.jsx]
